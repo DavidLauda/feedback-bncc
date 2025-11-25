@@ -85,7 +85,7 @@ app.post('/api/feedback', (req, res) => {
     });
 });
 
-//api
+//APIA
 app.put('/api/feedback/:id', (req, res) => {
     const { id } = req.params;
     const { status, eventName, division, rating, comment, suggestion } = req.body;
