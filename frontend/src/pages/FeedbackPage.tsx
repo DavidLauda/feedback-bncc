@@ -3,17 +3,40 @@ import Event from "../components/Event";
 import Feedback from "../components/Feedback";
 import Personal from "../components/Personal";
 import { Division } from "../lib/types/feedback";
+import { createFeedback } from "../lib/api/feedback";
 
 export default function FeedbackPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [division, setDivision] = useState<Division>("");
+  const [division, setDivision] = useState<Division>("Learning & Training");
 
   const [event, setEvent] = useState("");
   const [rating, setRating] = useState(0);
 
   const [feedback, setfeedback] = useState("");
   const [suggestion, setSuggestion] = useState("");
+
+  const handleSubmit = async () => {
+    if (!name || !email || !event || !division || !rating) {
+      alert("Field wajib harus diisi!");
+      return;
+    }
+
+    const data = {
+      name,
+      email,
+      eventName: event,
+      division,
+      rating,
+      feedback,
+      suggestion,
+    };
+
+    try {
+      const result = await createFeedback(data);
+      console.log("Success:", result);
+    } catch (error) {}
+  };
 
   return (
     <div className="flex min-h-screen justify-center p-16 bg-linear-to-tr from-blue-400 to-purple-400">
@@ -50,6 +73,7 @@ export default function FeedbackPage() {
 
         <button
           type="submit"
+          onClick={handleSubmit}
           className="my-3 w-full cursor-pointer bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-200 shadow-md hover:shadow-lg"
         >
           Submit Feedback

@@ -1,4 +1,10 @@
-export type Division = "LnT" | "EEO" | "PR" | "HRD" | "RnD" | "";
+export type Division =
+  | "Learning & Training"
+  | "External Events & Operations"
+  | "Public Relations"
+  | "Human Resources Development"
+  | "Research & Development"
+  | "";
 
 export type Feedback = {
   id: string;
@@ -6,9 +12,11 @@ export type Feedback = {
   email: string;
   eventName: string;
   division: Division;
-  rating: 1 | 2 | 3 | 4 | 5;
+  rating: number;
   comment?: string;
   suggestion?: string;
   createdAt: string;
   status: "open" | "in-review" | "resolved";
 };
+
+export type NewFeedback = Omit<Feedback, "id" | "createdAt" | "status">;
