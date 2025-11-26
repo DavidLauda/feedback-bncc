@@ -32,6 +32,8 @@ export const updateFeedback = async (
   id: string,
   updates: Partial<Feedback>
 ) => {
+  console.log("TO BE UPDATED", updates);
+
   const response = await fetch(`${API_URL}/feedback/${id}`, {
     method: "PUT",
     headers: {
@@ -39,6 +41,7 @@ export const updateFeedback = async (
     },
     body: JSON.stringify(updates),
   });
+
   return response.json();
 };
 

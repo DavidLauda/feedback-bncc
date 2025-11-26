@@ -10,6 +10,7 @@ const PORT = 3000;
 const DATA_FILE = path.join(__dirname, "feedbacks.json");
 
 app.use(cors());
+app.use(express.json());
 app.use(bodyParser.json());
 
 const readData = () => {
@@ -87,7 +88,6 @@ app.post("/api/feedback", (req, res) => {
 
 app.put("/api/feedback/:id", (req, res) => {
   const { id } = req.params;
-  const { status, eventName, division, rating, comment, suggestion } = req.body;
 
   const currentData = readData();
   const index = currentData.findIndex((f) => f.id === id);
@@ -98,13 +98,7 @@ app.put("/api/feedback/:id", (req, res) => {
 
   currentData[index] = {
     ...currentData[index],
-    status: status || currentData[index].status,
-    eventName: eventName || currentData[index].eventName,
-    division: division || currentData[index].division,
-    rating: rating || currentData[index].rating,
-    comment: comment !== undefined ? comment : currentData[index].comment,
-    suggestion:
-      suggestion !== undefined ? suggestion : currentData[index].suggestion,
+    ...req.body,
   };
 
   writeData(currentData);

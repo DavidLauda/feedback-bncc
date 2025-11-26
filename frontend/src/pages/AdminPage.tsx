@@ -3,6 +3,7 @@ import { deleteFeedback, getAllFeedback } from "../lib/api/feedback";
 import { Feedback } from "../lib/types/feedback";
 import { toast } from "sonner";
 import { Edit, Trash } from "lucide-react";
+import FeedbackModal from "../components/FeedbackModal";
 
 const headers = [
   "Name",
@@ -18,9 +19,13 @@ const headers = [
 export default function AdminPage() {
   const [search, setSearch] = useState("");
   const [feedback, setFeedback] = useState<Feedback[]>([]);
+  const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(
+    null
+  );
   const [loading, setLoading] = useState(true);
-
   const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search), 300);
@@ -119,7 +124,10 @@ export default function AdminPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => alert("Edit functionality")}
+                          onClick={() => {
+                            setIsModalOpen(true);
+                            setSelectedFeedback(f);
+                          }}
                           className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           title="Edit"
                         >
@@ -139,6 +147,12 @@ export default function AdminPage() {
               </tbody>
             </table>
           </div>
+        )}
+        {isModalOpen && (
+          <FeedbackModal
+            feedback={selectedFeedback!}
+            onClose={() => setIsModalOpen(false)}
+          />
         )}
       </div>
     </div>
