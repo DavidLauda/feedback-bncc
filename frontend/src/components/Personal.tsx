@@ -70,17 +70,11 @@ export default function Personal({
             onChange={(e) => setDivision(e.target.value as Division)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
           >
-            <option value="Learning & Training">Learning & Training</option>
-            <option value="External Events & Operations">
-              External Events & Operations
-            </option>
-            <option value="Public Relations">Public Relations</option>
-            <option value="Human Resources Development">
-              Human Resources Development
-            </option>
-            <option value="Research & Development">
-              Research & Development
-            </option>
+            <option value="LnT">Learning & Training</option>
+            <option value="EEO">External Events & Operations</option>
+            <option value="PR">Public Relations</option>
+            <option value="HRD">Human Resources Development</option>
+            <option value="RnD">Research & Development</option>
           </select>
         </div>
       </div>

@@ -4,11 +4,12 @@ import Feedback from "../components/Feedback";
 import Personal from "../components/Personal";
 import { Division } from "../lib/types/feedback";
 import { createFeedback } from "../lib/api/feedback";
+import { toast } from "sonner";
 
 export default function FeedbackPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [division, setDivision] = useState<Division>("Learning & Training");
+  const [division, setDivision] = useState<Division>("LnT");
 
   const [event, setEvent] = useState("");
   const [rating, setRating] = useState(0);
@@ -18,7 +19,7 @@ export default function FeedbackPage() {
 
   const handleSubmit = async () => {
     if (!name || !email || !event || !division || !rating) {
-      alert("Field wajib harus diisi!");
+      toast.error("Field wajib harus diisi!");
       return;
     }
 
@@ -35,7 +36,11 @@ export default function FeedbackPage() {
     try {
       const result = await createFeedback(data);
       console.log("Success:", result);
-    } catch (error) {}
+      toast.success("Feedback berhasil dikirim!");
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error("Feedback gagal dikirim!");
+    }
   };
 
   return (

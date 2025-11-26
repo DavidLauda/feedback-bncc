@@ -1,10 +1,4 @@
-export type Division =
-  | "Learning & Training"
-  | "External Events & Operations"
-  | "Public Relations"
-  | "Human Resources Development"
-  | "Research & Development"
-  | "";
+export type Division = "LnT" | "EEO" | "PR" | "HRD" | "RnD" | "";
 
 export type Feedback = {
   id: string;

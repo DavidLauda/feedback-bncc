@@ -4,7 +4,8 @@ const API_URL = "http://localhost:3000/api";
 
 export const getAllFeedback = async () => {
   const response = await fetch(`${API_URL}/feedback`);
-  return response.json();
+  const json = await response.json();
+  return json.data;
 };
 
 export const createFeedback = async (newFeedback: NewFeedback) => {
