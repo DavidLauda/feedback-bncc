@@ -1,9 +1,12 @@
+import React from "react";
+
 export default function FormInput({
   id,
   label,
   type = "text",
   value,
   onChange,
+  Icon,
   isAdmin,
 }: {
   id: string;
@@ -11,14 +14,16 @@ export default function FormInput({
   type?: string;
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  Icon?: React.ElementType;
   isAdmin?: boolean;
 }) {
   return (
     <div>
       <label
         htmlFor={id}
-        className="block text-sm font-medium mb-2 text-gray-800"
+        className="flex gap-1 items-center text-sm font-medium mb-2 text-gray-800"
       >
+        {Icon && <Icon size={16} />}
         {label}
       </label>
 

@@ -1,3 +1,4 @@
+import { Calendar, Star } from "lucide-react";
 import FormInput from "./FormInput";
 
 const ratings = [
@@ -21,14 +22,16 @@ export default function Event({
         <FormInput
           id="event-name"
           label="Event Name"
+          Icon={Calendar}
           value={form.eventName}
           onChange={(e) => onChange("eventName", e.target.value)}
         />
 
         <label
           htmlFor="rating"
-          className="block text-sm font-medium mb-2 text-gray-800"
+          className="flex items-center gap-1 text-sm font-medium mb-2 text-gray-800"
         >
+          <Star size={16} />
           Rating
         </label>
         <div className="flex flex-col gap-5">

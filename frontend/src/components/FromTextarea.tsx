@@ -4,11 +4,13 @@ export default function FormTextarea({
   value,
   onChange,
   rows = 3,
+  Icon,
   isAdmin,
 }: {
   id: string;
   label: string;
   value: string;
+  Icon?: React.ElementType;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   rows?: number;
   isAdmin?: boolean;
@@ -17,8 +19,9 @@ export default function FormTextarea({
     <div>
       <label
         htmlFor={id}
-        className="block text-sm font-medium mb-2 text-gray-800"
+        className="flex items-center gap-1 text-sm font-medium mb-2 text-gray-800"
       >
+        {Icon && <Icon size={16} />}
         {label}
       </label>
 

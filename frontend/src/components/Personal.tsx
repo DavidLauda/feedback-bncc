@@ -1,3 +1,4 @@
+import { Mail, User, Users } from "lucide-react";
 import { Division } from "../lib/types/feedback";
 import FormInput from "./FormInput";
 import FormSelect from "./FromSelect";
@@ -16,20 +17,23 @@ export default function Personal({
           id="=name"
           label="Name"
           value={form.name}
+          Icon={User}
           onChange={(e) => onChange("name", e.target.value)}
         />
+
         <FormInput
           id="email"
           label="Email"
           type="email"
+          Icon={Mail}
           value={form.email}
           onChange={(e) => onChange("email", e.target.value)}
-          isAdmin
         />
 
         <FormSelect
           id="division"
           label="Division"
+          Icon={Users}
           value={form.division}
           onChange={(e) => onChange("division", e.target.value)}
           options={["LnT", "EEO", "PR", "HRD", "RnD"]}

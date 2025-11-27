@@ -5,6 +5,16 @@ import { toast } from "sonner";
 import FormInput from "./FormInput";
 import FormSelect from "./FromSelect";
 import FormTextarea from "./FromTextarea";
+import {
+  Calendar,
+  Hourglass,
+  Mail,
+  MessageSquare,
+  MessageSquareText,
+  Star,
+  User,
+  Users,
+} from "lucide-react";
 
 export default function FeedbackModal({
   feedback,
@@ -37,7 +47,7 @@ export default function FeedbackModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white rounded-xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 border-b border-gray-200">
@@ -48,6 +58,7 @@ export default function FeedbackModal({
           <FormInput
             id="name"
             label="Name"
+            Icon={User}
             value={feedbackData.name}
             onChange={(e) => handleChange("name", e.target.value)}
             isAdmin
@@ -57,6 +68,7 @@ export default function FeedbackModal({
             id="email"
             label="Email"
             type="email"
+            Icon={Mail}
             value={feedbackData.email}
             onChange={(e) => handleChange("email", e.target.value)}
             isAdmin
@@ -65,22 +77,26 @@ export default function FeedbackModal({
           <FormInput
             id="event-name"
             label="Event Name"
+            Icon={Calendar}
             value={feedbackData.eventName}
             onChange={(e) => handleChange("eventName", e.target.value)}
             isAdmin
           />
 
-          <FormInput
+          <FormSelect
             id="division"
             label="Division"
+            Icon={Users}
             value={feedbackData.division}
             onChange={(e) => handleChange("division", e.target.value)}
+            options={["LnT", "EEO", "PR", "HRD", "RnD"]}
             isAdmin
           />
 
           <FormSelect
             id="rating"
             label="Rating"
+            Icon={Star}
             value={feedbackData.rating}
             onChange={(e) => handleChange("rating", Number(e.target.value))}
             options={[1, 2, 3, 4, 5]}
@@ -90,6 +106,7 @@ export default function FeedbackModal({
           <FormSelect
             id="status"
             label="Status"
+            Icon={Hourglass}
             value={feedbackData.status}
             onChange={(e) => handleChange("status", e.target.value)}
             options={["Open", "Pending", "Reviewed"]}
@@ -99,6 +116,7 @@ export default function FeedbackModal({
           <FormTextarea
             id="comment"
             label="Comment"
+            Icon={MessageSquare}
             value={feedbackData.comment || ""}
             onChange={(e) => handleChange("comment", e.target.value)}
             isAdmin
@@ -107,25 +125,26 @@ export default function FeedbackModal({
           <FormTextarea
             id="suggestion"
             label="Suggestion"
+            Icon={MessageSquareText}
             value={feedbackData.suggestion || ""}
             onChange={(e) => handleChange("suggestion", e.target.value)}
             isAdmin
           />
 
-          <div className="flex gap-3 pt-4">
-            <button
-              type="submit"
-              className="bg-linear-to-r from-red-500 to-orange-500 text-white px-6 py-3 rounded-lg font-medium hover:from-red-600 hover:to-orange-600 transition-all"
-            >
-              Save Changes
-            </button>
-
+          <div className="flex justify-between ">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+              className="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg font-medium cursor-pointer hover:bg-gray-200 transition-colors"
             >
               Cancel
+            </button>
+
+            <button
+              type="submit"
+              className="bg-linear-to-r cursor-pointer from-red-500 to-orange-500 shadow-lg text-white px-5 py-2 rounded-lg font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+            >
+              Save Changes
             </button>
           </div>
         </form>

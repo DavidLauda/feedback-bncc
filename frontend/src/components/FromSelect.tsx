@@ -3,6 +3,7 @@ export default function FormSelect({
   label,
   value,
   onChange,
+  Icon,
   options,
   isAdmin,
 }: {
@@ -10,6 +11,7 @@ export default function FormSelect({
   label: string;
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  Icon?: React.ElementType;
   options: (string | number)[];
   isAdmin?: boolean;
 }) {
@@ -17,8 +19,9 @@ export default function FormSelect({
     <div>
       <label
         htmlFor={id}
-        className="block text-sm font-medium mb-2 text-gray-800"
+        className="flex items-center gap-1 text-sm font-medium mb-2 text-gray-800"
       >
+        {Icon && <Icon size={16} />}
         {label}
       </label>
 

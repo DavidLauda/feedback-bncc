@@ -55,7 +55,7 @@ export default function FeedbackPage() {
 
   return (
     <div className="flex min-h-screen justify-center p-16 bg-linear-to-tr from-blue-400 to-purple-400">
-      <div className="px-20 py-10 w-4xl rounded-lg flex flex-col gap-4 bg-white ">
+      <div className="px-20 py-10 w-4xl rounded-3xl flex flex-col gap-4 bg-white shadow-3xl ">
         <div className="flex gap-1 flex-col items-center">
           <h1 className="text-4xl text-indigo-500 font-bold">Feedback Form</h1>
           <p className="text-lg text-gray-400">
@@ -64,9 +64,9 @@ export default function FeedbackPage() {
         </div>
         <form onSubmit={handleSubmit}>
           <Personal form={form} onChange={handleChange} />
-          <hr className="my-4" />
+          <hr className="my-6" />
           <Event form={form} onChange={handleChange} />
-          <hr className="my-4" />
+          <hr className="my-6" />
           <Feedback form={form} onChange={handleChange} />
 
           <button

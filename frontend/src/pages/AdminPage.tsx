@@ -2,19 +2,8 @@ import { useEffect, useState, useMemo } from "react";
 import { deleteFeedback, getAllFeedback } from "../lib/api/feedback";
 import { Feedback } from "../lib/types/feedback";
 import { toast } from "sonner";
-import { Edit, Trash } from "lucide-react";
 import FeedbackModal from "../components/FeedbackModal";
-
-const headers = [
-  "Name",
-  "Email",
-  "Event Name",
-  "Division",
-  "Rating",
-  "Status",
-  "Created At",
-  "Actions",
-];
+import FeedbackTable from "../components/FeedbackTable";
 
 export default function AdminPage() {
   const [search, setSearch] = useState("");
@@ -53,31 +42,34 @@ export default function AdminPage() {
     }
   };
 
+  const refresh = async () => {
+    try {
+      const data = await getAllFeedback();
+      setFeedbacks(data);
+    } catch (err) {
+      console.error("Error fetching feedback:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const load = async () => {
-      try {
-        const data = await getAllFeedback();
-        setFeedbacks(data);
-      } catch (err) {
-        console.error("Error fetching feedback:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
+    refresh();
   }, []);
 
   return (
     <div className="flex min-h-screen justify-center p-16 bg-linear-to-tr from-red-400 to-orange-400">
-      <div className="w-5xl p-10 rounded-xl flex flex-col gap-4 bg-white shadow-xl">
+      <div className="w-5xl p-10 rounded-xl flex flex-col gap-4 bg-white shadow-3xl">
         <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+          <h1 className="text-4xl font-bold text-orange-500">
+            Admin Dashboard
+          </h1>
           <p className="text-gray-600">
             Manage and review all feedback submissions
           </p>
         </div>
 
-        <div>
+        <div className="flex flex-row gap-5">
           <input
             type="text"
             placeholder="Search by name, email, or event..."
@@ -85,6 +77,12 @@ export default function AdminPage() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
           />
+          <button
+            onClick={refresh}
+            className="bg-linear-to-r  from-red-500 to-orange-500 cursor-pointer shadow-lg text-white px-5 py-2 rounded-lg font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+          >
+            Refresh
+          </button>
         </div>
 
         {loading ? (
@@ -92,61 +90,12 @@ export default function AdminPage() {
         ) : filteredFeedback.length === 0 ? (
           <p className="text-gray-500">No feedback found.</p>
         ) : (
-          <div className="overflow-x-auto rounded-lg ">
-            <table className="w-full table-auto">
-              <thead className=" text-left">
-                <tr>
-                  {headers.map((header) => (
-                    <th
-                      key={header}
-                      className="px-3 py-4 font-semibold text-gray-700"
-                    >
-                      {header}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {filteredFeedback.map((f) => (
-                  <tr
-                    key={f.id}
-                    className="border-t hover:bg-gray-50 transition-all duration-200"
-                  >
-                    <td className="px-3 py-4">{f.name}</td>
-                    <td className="px-3 py-4">{f.email}</td>
-                    <td className="px-3 py-4">{f.eventName}</td>
-                    <td className="px-3 py-4">{f.division}</td>
-                    <td className="px-3 py-4">{f.rating}</td>
-                    <td className="px-3 py-4">{f.status}</td>
-                    <td className="px-3 py-4">
-                      {new Date(f.createdAt).toLocaleString()}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => {
-                            setIsModalOpen(true);
-                            setSelectedFeedback(f);
-                          }}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                          title="Edit"
-                        >
-                          <Edit size={18} />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(f.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete"
-                        >
-                          <Trash size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <FeedbackTable
+            feedbacks={filteredFeedback}
+            setIsModalOpen={setIsModalOpen}
+            setSelectedFeedback={setSelectedFeedback}
+            handleDelete={handleDelete}
+          />
         )}
         {isModalOpen && (
           <FeedbackModal
