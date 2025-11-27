@@ -1,5 +1,5 @@
-import { MessageSquare, MessageSquareText } from "lucide-react";
-import FormTextarea from "./FromTextarea";
+import { Lightbulb, MessageSquare } from "lucide-react";
+import FormTextarea from "./FormTextarea";
 
 export default function Feedback({
   form,
@@ -15,6 +15,7 @@ export default function Feedback({
           id="comment"
           label="Comment"
           value={form.comment || ""}
+          placeholder="My Comment"
           Icon={MessageSquare}
           onChange={(e) => onChange("comment", e.target.value)}
         />
@@ -23,7 +24,8 @@ export default function Feedback({
           id="suggestion"
           label="Suggestion"
           value={form.suggestion || ""}
-          Icon={MessageSquareText}
+          placeholder="My Suggestion"
+          Icon={Lightbulb}
           onChange={(e) => onChange("suggestion", e.target.value)}
         />
       </div>

@@ -14,7 +14,7 @@ function App() {
     <div>
       <button
         onClick={handleSwitch}
-        className="absolute text-indigo-500 flex items-center justify-center right-4 top-4 rounded-full bg-white w-12 h-12"
+        className="absolute top-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-indigo-500"
       >
         {page === "feedback" ? <Shield /> : <User />}
       </button>

@@ -2,14 +2,14 @@ import { useEffect, useState, useMemo } from "react";
 import { deleteFeedback, getAllFeedback } from "../lib/api/feedback";
 import { Feedback } from "../lib/types/feedback";
 import { toast } from "sonner";
-import FeedbackModal from "../components/FeedbackModal";
+import EditModal from "../components/EditModal";
 import FeedbackTable from "../components/FeedbackTable";
 
 export default function AdminPage() {
   const [search, setSearch] = useState("");
   const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -27,7 +27,7 @@ export default function AdminPage() {
       (f) =>
         f.name.toLowerCase().includes(s) ||
         f.email.toLowerCase().includes(s) ||
-        f.eventName.toLowerCase().includes(s)
+        f.eventName.toLowerCase().includes(s),
     );
   }, [debouncedSearch, feedbacks]);
 
@@ -58,37 +58,38 @@ export default function AdminPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen justify-center p-16 bg-linear-to-tr from-red-400 to-orange-400">
-      <div className="w-5xl p-10 rounded-xl flex flex-col gap-4 bg-white shadow-3xl">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-4xl font-bold text-orange-500">
+    <div className="flex min-h-screen justify-center bg-linear-to-tr from-red-400 to-orange-400 p-4 sm:p-8 lg:p-16">
+      <div className="shadow-3xl flex w-full max-w-5xl flex-col gap-6 rounded-xl bg-white p-6 sm:p-10">
+        {/* Header */}
+        <div className="flex flex-col gap-1 text-center sm:text-left">
+          <h1 className="text-3xl font-bold text-orange-500 sm:text-4xl">
             Admin Dashboard
           </h1>
-          <p className="text-gray-600">
+          <p className="text-sm text-gray-600 sm:text-base">
             Manage and review all feedback submissions
           </p>
         </div>
 
-        <div className="flex flex-row gap-5">
+        <div className="flex w-full flex-col gap-3 sm:flex-row sm:gap-5">
           <input
             type="text"
             placeholder="Search by name, email, or event..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition"
+            className="w-full rounded-lg border border-gray-300 px-4 py-2 transition outline-none focus:ring-2 focus:ring-orange-500"
           />
           <button
             onClick={refresh}
-            className="bg-linear-to-r  from-red-500 to-orange-500 cursor-pointer shadow-lg text-white px-5 py-2 rounded-lg font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+            className="w-full rounded-lg bg-linear-to-r from-red-500 to-orange-500 px-5 py-2 font-medium text-white shadow-lg transition-all hover:from-red-600 hover:to-orange-600 sm:w-auto"
           >
-            Refresh
+            {loading ? "Loading..." : "Refresh"}
           </button>
         </div>
 
         {loading ? (
-          <p className="text-gray-500">Loading...</p>
+          <p className="text-center text-gray-500">Loading...</p>
         ) : filteredFeedback.length === 0 ? (
-          <p className="text-gray-500">No feedback found.</p>
+          <p className="text-center text-gray-500">No feedback found.</p>
         ) : (
           <FeedbackTable
             feedbacks={filteredFeedback}
@@ -97,8 +98,9 @@ export default function AdminPage() {
             handleDelete={handleDelete}
           />
         )}
+
         {isModalOpen && (
-          <FeedbackModal
+          <EditModal
             feedback={selectedFeedback!}
             onClose={() => setIsModalOpen(false)}
           />

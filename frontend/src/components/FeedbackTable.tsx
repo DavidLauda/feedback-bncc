@@ -1,15 +1,25 @@
-import { Edit, Trash } from "lucide-react";
 import { Feedback } from "../lib/types/feedback";
+import {
+  User,
+  Mail,
+  Calendar,
+  Users,
+  Star,
+  Hourglass,
+  CalendarPlus,
+  Trash,
+  Edit,
+} from "lucide-react";
 
 const headers = [
-  "Name",
-  "Email",
-  "Event Name",
-  "Division",
-  "Rating",
-  "Status",
-  "Created At",
-  "Actions",
+  { text: "Name", icon: <User size={16} /> },
+  { text: "Email", icon: <Mail size={16} /> },
+  { text: "Event", icon: <Calendar size={16} /> },
+  { text: "Division", icon: <Users size={16} /> },
+  { text: "Rating", icon: <Star size={16} /> },
+  { text: "Status", icon: <Hourglass size={16} /> },
+  { text: "Created", icon: <CalendarPlus size={16} /> },
+  { text: "Actions", icon: <Trash size={16} /> },
 ];
 
 export default function FeedbackTable({
@@ -24,16 +34,19 @@ export default function FeedbackTable({
   handleDelete: (id: string) => Promise<void>;
 }) {
   return (
-    <div className="overflow-x-auto rounded-lg ">
+    <div className="overflow-x-auto rounded-lg">
       <table className="w-full table-auto">
-        <thead className=" text-left">
+        <thead className="text-left">
           <tr>
-            {headers.map((header) => (
+            {headers.map((h) => (
               <th
-                key={header}
-                className="px-3 py-4 font-semibold text-gray-700"
+                key={h.text}
+                className="px-3 py-2 font-semibold text-gray-700"
               >
-                {header}
+                {/* Desktop */}
+                <span className="hidden sm:inline">{h.text}</span>
+                {/* Mobile */}
+                <span className="inline sm:hidden">{h.icon}</span>
               </th>
             ))}
           </tr>
@@ -42,7 +55,11 @@ export default function FeedbackTable({
           {feedbacks.map((f) => (
             <tr
               key={f.id}
-              className="border-t border-gray-300 hover:bg-gray-50 transition-all duration-200"
+              onClick={() => {
+                setIsModalOpen(true);
+                setSelectedFeedback(f);
+              }}
+              className="border-t border-gray-300 transition-all duration-200 hover:bg-gray-50"
             >
               <td className="px-3 py-4">{f.name}</td>
               <td className="px-3 py-4">{f.email}</td>
@@ -51,7 +68,7 @@ export default function FeedbackTable({
               <td className="px-3 py-4">{f.rating}</td>
               <td className="px-3 py-4">{f.status}</td>
               <td className="px-3 py-4">
-                {new Date(f.createdAt).toLocaleString()}
+                {new Date(f.createdAt).toLocaleString().split(",")[0]}
               </td>
               <td className="px-6 py-4">
                 <div className="flex items-center gap-2">
@@ -60,14 +77,17 @@ export default function FeedbackTable({
                       setIsModalOpen(true);
                       setSelectedFeedback(f);
                     }}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    className="rounded-lg p-2 text-blue-600 transition-colors hover:bg-blue-50"
                     title="Edit"
                   >
                     <Edit size={18} />
                   </button>
                   <button
-                    onClick={() => handleDelete(f.id)}
-                    className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    onClick={(e) => {
+                      handleDelete(f.id);
+                      e.stopPropagation();
+                    }}
+                    className="rounded-lg p-2 text-red-600 transition-colors hover:bg-red-50"
                     title="Delete"
                   >
                     <Trash size={18} />

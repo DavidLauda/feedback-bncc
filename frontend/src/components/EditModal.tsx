@@ -3,20 +3,21 @@ import { Feedback } from "../lib/types/feedback";
 import { updateFeedback } from "../lib/api/feedback";
 import { toast } from "sonner";
 import FormInput from "./FormInput";
-import FormSelect from "./FromSelect";
-import FormTextarea from "./FromTextarea";
+import FormSelect from "./FormSelect";
+import FormTextarea from "./FormTextarea";
 import {
   Calendar,
   Hourglass,
+  Lightbulb,
   Mail,
   MessageSquare,
-  MessageSquareText,
+  Pencil,
   Star,
   User,
   Users,
 } from "lucide-react";
 
-export default function FeedbackModal({
+export default function EditModal({
   feedback,
   onClose,
 }: {
@@ -43,18 +44,19 @@ export default function FeedbackModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-transparent"
+        className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl bg-white shadow-2xl [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 border-b border-gray-200">
+        <div className="flex flex-row items-center gap-2 border-b border-gray-200 p-6">
+          <Pencil size={24} />
           <h2 className="text-2xl font-bold text-gray-900">Edit Feedback</h2>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 p-6">
           <FormInput
             id="name"
             label="Name"
@@ -125,24 +127,24 @@ export default function FeedbackModal({
           <FormTextarea
             id="suggestion"
             label="Suggestion"
-            Icon={MessageSquareText}
+            Icon={Lightbulb}
             value={feedbackData.suggestion || ""}
             onChange={(e) => handleChange("suggestion", e.target.value)}
             isAdmin
           />
 
-          <div className="flex justify-between ">
+          <div className="flex justify-between">
             <button
               type="button"
               onClick={onClose}
-              className="bg-gray-100 text-gray-700 px-5 py-2 rounded-lg font-medium cursor-pointer hover:bg-gray-200 transition-colors"
+              className="cursor-pointer rounded-lg bg-gray-100 px-5 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-200"
             >
               Cancel
             </button>
 
             <button
               type="submit"
-              className="bg-linear-to-r cursor-pointer from-red-500 to-orange-500 shadow-lg text-white px-5 py-2 rounded-lg font-medium hover:from-red-600 hover:to-orange-600 transition-all"
+              className="cursor-pointer rounded-lg bg-linear-to-r from-red-500 to-orange-500 px-5 py-2 font-medium text-white shadow-lg transition-all hover:from-red-600 hover:to-orange-600"
             >
               Save Changes
             </button>

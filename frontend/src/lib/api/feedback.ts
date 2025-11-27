@@ -9,8 +9,6 @@ export const getAllFeedback = async () => {
 };
 
 export const createFeedback = async (newFeedback: NewFeedback) => {
-  console.log(newFeedback);
-
   const response = await fetch(`${API_URL}/feedback`, {
     method: "POST",
     headers: {
@@ -30,24 +28,27 @@ export const createFeedback = async (newFeedback: NewFeedback) => {
 
 export const updateFeedback = async (
   id: string,
-  updates: Partial<Feedback>
+  updates: Partial<Feedback>,
 ) => {
-  console.log("TO BE UPDATED", updates);
-
-  const response = await fetch(`${API_URL}/feedback/${id}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+  const url = `${API_URL}/feedback/${id}`;
+  const response = await fetch(url, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updates),
   });
+
+  if (!response.ok) {
+    throw new Error((await response.text()) || "Failed to update feedback");
+  }
 
   return response.json();
 };
 
 export const deleteFeedback = async (id: string) => {
-  const response = await fetch(`${API_URL}/feedback/${id}`, {
-    method: "DELETE",
-  });
+  const url = `${API_URL}/feedback/${id}`;
+  const response = await fetch(url, { method: "DELETE" });
+  if (!response.ok) {
+    throw new Error((await response.text()) || "Failed to delete feedback");
+  }
   return response.json();
 };
