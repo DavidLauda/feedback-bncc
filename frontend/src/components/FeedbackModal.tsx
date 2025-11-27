@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Feedback } from "../lib/types/feedback";
 import { updateFeedback } from "../lib/api/feedback";
 import { toast } from "sonner";
+import FormInput from "./FormInput";
+import FormSelect from "./FromSelect";
+import FormTextarea from "./FromTextarea";
 
 export default function FeedbackModal({
   feedback,
@@ -12,16 +15,15 @@ export default function FeedbackModal({
 }) {
   const [feedbackData, setFeedbackData] = useState<Feedback>(feedback);
 
-  const handleChange = (key: string, value: string) => {
+  const handleChange = (key: string, value: any) => {
     setFeedbackData((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const data = await updateFeedback(feedbackData.id, feedbackData);
+      await updateFeedback(feedbackData.id, feedbackData);
       toast.success("Feedback updated");
-      console.log("New feedback data:", data);
       onClose();
     } catch (error) {
       console.error("Error updating feedback:", error);
@@ -43,140 +45,72 @@ export default function FeedbackModal({
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              value={feedbackData.name}
-              onChange={(e) => handleChange("name", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-            />
-          </div>
+          <FormInput
+            id="name"
+            label="Name"
+            value={feedbackData.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+            isAdmin
+          />
 
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={feedbackData.email}
-              onChange={(e) => handleChange("email", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-            />
-          </div>
+          <FormInput
+            id="email"
+            label="Email"
+            type="email"
+            value={feedbackData.email}
+            onChange={(e) => handleChange("email", e.target.value)}
+            isAdmin
+          />
 
-          <div>
-            <label
-              htmlFor="event-name"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Event Name
-            </label>
-            <input
-              id="event-name"
-              type="text"
-              value={feedbackData.eventName}
-              onChange={(e) => handleChange("eventName", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-            />
-          </div>
+          <FormInput
+            id="event-name"
+            label="Event Name"
+            value={feedbackData.eventName}
+            onChange={(e) => handleChange("eventName", e.target.value)}
+            isAdmin
+          />
 
-          <div>
-            <label
-              htmlFor="division"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Division
-            </label>
-            <input
-              id="division"
-              type="text"
-              value={feedbackData.division}
-              onChange={(e) => handleChange("division", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-            />
-          </div>
+          <FormInput
+            id="division"
+            label="Division"
+            value={feedbackData.division}
+            onChange={(e) => handleChange("division", e.target.value)}
+            isAdmin
+          />
 
-          <div>
-            <label
-              htmlFor="rating"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Rating
-            </label>
-            <select
-              id="rating"
-              value={feedbackData.rating}
-              onChange={(e) => handleChange("rating", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-            >
-              {[1, 2, 3, 4, 5].map((num) => (
-                <option key={num} value={num}>
-                  {num} Star{num !== 1 ? "s" : ""}
-                </option>
-              ))}
-            </select>
-          </div>
+          <FormSelect
+            id="rating"
+            label="Rating"
+            value={feedbackData.rating}
+            onChange={(e) => handleChange("rating", Number(e.target.value))}
+            options={[1, 2, 3, 4, 5]}
+            isAdmin
+          />
 
-          <div>
-            <label
-              htmlFor="status"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Status
-            </label>
-            <select
-              id="status"
-              value={feedbackData.status}
-              onChange={(e) => handleChange("status", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-            >
-              <option value="Pending">Pending</option>
-              <option value="Reviewed">Reviewed</option>
-            </select>
-          </div>
+          <FormSelect
+            id="status"
+            label="Status"
+            value={feedbackData.status}
+            onChange={(e) => handleChange("status", e.target.value)}
+            options={["Open", "Pending", "Reviewed"]}
+            isAdmin
+          />
 
-          <div>
-            <label
-              id="comment"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Comment
-            </label>
-            <textarea
-              id="comment"
-              value={feedbackData.comment || ""}
-              onChange={(e) => handleChange("comment", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-              rows={3}
-            />
-          </div>
+          <FormTextarea
+            id="comment"
+            label="Comment"
+            value={feedbackData.comment || ""}
+            onChange={(e) => handleChange("comment", e.target.value)}
+            isAdmin
+          />
 
-          <div>
-            <label
-              htmlFor="suggestion"
-              className="block text-sm font-medium mb-2 text-gray-800"
-            >
-              Suggestion
-            </label>
-            <textarea
-              id="suggestion"
-              value={feedbackData.suggestion || ""}
-              onChange={(e) => handleChange("suggestion", e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
-              rows={3}
-            />
-          </div>
+          <FormTextarea
+            id="suggestion"
+            label="Suggestion"
+            value={feedbackData.suggestion || ""}
+            onChange={(e) => handleChange("suggestion", e.target.value)}
+            isAdmin
+          />
 
           <div className="flex gap-3 pt-4">
             <button
@@ -185,10 +119,11 @@ export default function FeedbackModal({
             >
               Save Changes
             </button>
+
             <button
               type="button"
               onClick={onClose}
-              className=" bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+              className="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors"
             >
               Cancel
             </button>

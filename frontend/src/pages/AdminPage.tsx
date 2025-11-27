@@ -18,7 +18,7 @@ const headers = [
 
 export default function AdminPage() {
   const [search, setSearch] = useState("");
-  const [feedback, setFeedback] = useState<Feedback[]>([]);
+  const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
   const [selectedFeedback, setSelectedFeedback] = useState<Feedback | null>(
     null
   );
@@ -34,18 +34,18 @@ export default function AdminPage() {
 
   const filteredFeedback = useMemo(() => {
     const s = debouncedSearch.toLowerCase();
-    return feedback.filter(
+    return feedbacks.filter(
       (f) =>
         f.name.toLowerCase().includes(s) ||
         f.email.toLowerCase().includes(s) ||
         f.eventName.toLowerCase().includes(s)
     );
-  }, [debouncedSearch, feedback]);
+  }, [debouncedSearch, feedbacks]);
 
   const handleDelete = async (id: string) => {
     try {
       await deleteFeedback(id);
-      setFeedback((prev) => prev.filter((f) => f.id !== id));
+      setFeedbacks((prev) => prev.filter((f) => f.id !== id));
       toast.success("Feedback deleted");
     } catch (err) {
       console.error("Error deleting feedback:", err);
@@ -57,7 +57,7 @@ export default function AdminPage() {
     const load = async () => {
       try {
         const data = await getAllFeedback();
-        setFeedback(data);
+        setFeedbacks(data);
       } catch (err) {
         console.error("Error fetching feedback:", err);
       } finally {

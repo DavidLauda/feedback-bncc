@@ -1,3 +1,5 @@
+import FormInput from "./FormInput";
+
 const ratings = [
   { text: "1 - Poor", value: 1 },
   { text: "2 - Fair", value: 2 },
@@ -7,37 +9,21 @@ const ratings = [
 ];
 
 export default function Event({
-  eventName,
-  rating,
-  setEventName,
-  setRating,
+  form,
+  onChange,
 }: {
-  eventName: string;
-  rating: number;
-  setEventName: (eventName: string) => void;
-  setRating: (rating: number) => void;
+  form: { eventName: string; rating: number };
+  onChange: (field: keyof typeof form, value: any) => void;
 }) {
   return (
     <div className="flex flex-col">
       <div className="space-y-4">
-        <div>
-          <label
-            htmlFor="event-name"
-            className="block text-sm font-medium mb-2 text-gray-800"
-          >
-            Event Name
-          </label>
-          <input
-            type="text"
-            id="event-name"
-            name="event-name"
-            required
-            value={eventName}
-            onChange={(e) => setEventName(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-            placeholder="Enter event name"
-          />
-        </div>
+        <FormInput
+          id="event-name"
+          label="Event Name"
+          value={form.eventName}
+          onChange={(e) => onChange("eventName", e.target.value)}
+        />
 
         <label
           htmlFor="rating"
@@ -55,8 +41,8 @@ export default function Event({
                 type="radio"
                 name="rating"
                 value={r.value}
-                checked={rating === r.value}
-                onChange={(e) => setRating(Number(e.target.value))}
+                checked={form.rating === r.value}
+                onChange={() => onChange("rating", r.value)}
                 className="w-4 h-4"
               />
               <span>{r.text}</span>

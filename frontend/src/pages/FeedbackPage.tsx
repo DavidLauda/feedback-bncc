@@ -2,23 +2,33 @@ import { useState } from "react";
 import Event from "../components/Event";
 import Feedback from "../components/Feedback";
 import Personal from "../components/Personal";
-import { Division } from "../lib/types/feedback";
+import { Division, NewFeedback } from "../lib/types/feedback";
 import { createFeedback } from "../lib/api/feedback";
 import { toast } from "sonner";
 
 export default function FeedbackPage() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [division, setDivision] = useState<Division>("LnT");
+  const [form, setForm] = useState<NewFeedback>({
+    name: "",
+    email: "",
+    division: "LnT" as Division,
+    eventName: "",
+    rating: 0,
+    comment: "",
+    suggestion: "",
+  });
 
-  const [event, setEvent] = useState("");
-  const [rating, setRating] = useState(0);
-
-  const [feedback, setfeedback] = useState("");
-  const [suggestion, setSuggestion] = useState("");
+  const handleChange = (field: keyof typeof form, value: any) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleSubmit = async () => {
-    if (!name || !email || !event || !division || !rating) {
+    const { name, email, eventName, division, rating, comment, suggestion } =
+      form;
+
+    if (!name || !email || !eventName || !division || !rating) {
       toast.error("Field wajib harus diisi!");
       return;
     }
@@ -26,10 +36,10 @@ export default function FeedbackPage() {
     const data = {
       name,
       email,
-      eventName: event,
+      eventName,
       division,
       rating,
-      feedback,
+      comment,
       suggestion,
     };
 
@@ -52,37 +62,20 @@ export default function FeedbackPage() {
             Help us improve our services. We'd love to hear your feedback!
           </p>
         </div>
+        <form onSubmit={handleSubmit}>
+          <Personal form={form} onChange={handleChange} />
+          <hr className="my-4" />
+          <Event form={form} onChange={handleChange} />
+          <hr className="my-4" />
+          <Feedback form={form} onChange={handleChange} />
 
-        <Personal
-          name={name}
-          setName={setName}
-          email={email}
-          setEmail={setEmail}
-          division={division}
-          setDivision={setDivision}
-        />
-        <hr className="my-4" />
-        <Event
-          eventName={event}
-          setEventName={setEvent}
-          rating={rating}
-          setRating={setRating}
-        />
-        <hr className="my-4" />
-        <Feedback
-          feedback={feedback}
-          setFeedback={setfeedback}
-          suggestion={suggestion}
-          setSuggestion={setSuggestion}
-        />
-
-        <button
-          type="submit"
-          onClick={handleSubmit}
-          className="my-3 w-full cursor-pointer bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-200 shadow-md hover:shadow-lg"
-        >
-          Submit Feedback
-        </button>
+          <button
+            type="submit"
+            className="my-3 w-full cursor-pointer bg-indigo-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-indigo-700 transition duration-200 shadow-md hover:shadow-lg"
+          >
+            Submit Feedback
+          </button>
+        </form>
       </div>
     </div>
   );
