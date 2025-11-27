@@ -1,5 +1,7 @@
 export type Division = "LnT" | "EEO" | "PR" | "HRD" | "RnD" | "";
 
+export type Status = "open" | "in-review" | "resolved";
+
 export type Feedback = {
   id: string;
   name: string;
@@ -10,7 +12,7 @@ export type Feedback = {
   comment?: string;
   suggestion?: string;
   createdAt: string;
-  status: "open" | "in-review" | "resolved";
+  status: Status;
 };
 
 export type NewFeedback = Omit<Feedback, "id" | "createdAt" | "status">;

@@ -51,9 +51,9 @@ export default function EditModal({
         className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-xl bg-white shadow-2xl [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-track]:bg-transparent"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex flex-row items-center gap-2 border-b border-gray-200 p-6">
+        <div className="flex flex-row items-center gap-2 border-b border-gray-200 p-6 text-gray-800">
           <Pencil size={24} />
-          <h2 className="text-2xl font-bold text-gray-900">Edit Feedback</h2>
+          <h2 className="text-2xl font-bold">Edit Feedback</h2>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 p-6">
@@ -111,7 +111,7 @@ export default function EditModal({
             Icon={Hourglass}
             value={feedbackData.status}
             onChange={(e) => handleChange("status", e.target.value)}
-            options={["Open", "Pending", "Reviewed"]}
+            options={["open", "in-review", "resolved"]}
             isAdmin
           />
 
@@ -133,7 +133,7 @@ export default function EditModal({
             isAdmin
           />
 
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm">
             <button
               type="button"
               onClick={onClose}

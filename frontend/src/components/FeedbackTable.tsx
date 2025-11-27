@@ -43,9 +43,7 @@ export default function FeedbackTable({
                 key={h.text}
                 className="px-3 py-2 font-semibold text-gray-700"
               >
-                {/* Desktop */}
                 <span className="hidden sm:inline">{h.text}</span>
-                {/* Mobile */}
                 <span className="inline sm:hidden">{h.icon}</span>
               </th>
             ))}

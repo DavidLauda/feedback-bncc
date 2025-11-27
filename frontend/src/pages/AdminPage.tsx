@@ -58,7 +58,7 @@ export default function AdminPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen justify-center bg-linear-to-tr from-red-400 to-orange-400 p-4 sm:p-8 lg:p-16">
+    <div className="flex min-h-screen justify-center bg-linear-to-tr from-red-400 to-orange-400 p-4 sm:p-8">
       <div className="shadow-3xl flex w-full max-w-5xl flex-col gap-6 rounded-xl bg-white p-6 sm:p-10">
         {/* Header */}
         <div className="flex flex-col gap-1 text-center sm:text-left">

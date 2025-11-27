@@ -32,7 +32,7 @@ export const updateFeedback = async (
 ) => {
   const url = `${API_URL}/feedback/${id}`;
   const response = await fetch(url, {
-    method: "PATCH",
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updates),
   });
