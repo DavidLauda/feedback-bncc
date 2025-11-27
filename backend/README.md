@@ -2,13 +2,13 @@
 
 Ini adalah layanan Backend untuk sistem feedback event internal BNCC. Dibangun menggunakan **Express.js** dan menggunakan **File System (JSON)** sebagai database sederhana untuk persistensi data.
 
-## 📋 Prasyarat (Prerequisites)
+##  Prasyarat (Prerequisites)
 
 Pastikan di komputer Anda sudah terinstall:
 
 - [Node.js](https://nodejs.org/) (versi LTS disarankan)
 
-## 🚀 Cara Menjalankan (Run Locally)
+##  Cara Menjalankan (Run Locally)
 
 Pastikan terminal Anda sudah berada di dalam folder `backend` sebelum menjalankan perintah berikut:
 
