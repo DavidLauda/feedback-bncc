@@ -1,9 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
-import { deleteFeedback, getAllFeedback } from "../lib/api/feedback";
+import { getAllFeedback } from "../lib/api/feedback";
 import { Feedback } from "../lib/types/feedback";
-import { toast } from "sonner";
 import EditModal from "../components/EditModal";
 import FeedbackTable from "../components/FeedbackTable";
+import DeleteModal from "../components/DeleteModal";
 
 export default function AdminPage() {
   const [search, setSearch] = useState("");
@@ -14,7 +14,8 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [debouncedSearch, setDebouncedSearch] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setDebouncedSearch(search), 300);
@@ -30,17 +31,6 @@ export default function AdminPage() {
         f.eventName.toLowerCase().includes(s),
     );
   }, [debouncedSearch, feedbacks]);
-
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteFeedback(id);
-      setFeedbacks((prev) => prev.filter((f) => f.id !== id));
-      toast.success("Feedback deleted");
-    } catch (err) {
-      console.error("Error deleting feedback:", err);
-      toast.error("Failed to delete feedback");
-    }
-  };
 
   const refresh = async () => {
     try {
@@ -60,7 +50,6 @@ export default function AdminPage() {
   return (
     <div className="flex min-h-screen justify-center bg-linear-to-tr from-red-400 to-orange-400 p-4 sm:p-8">
       <div className="shadow-3xl flex w-full max-w-5xl flex-col gap-6 rounded-xl bg-white p-6 sm:p-10">
-        {/* Header */}
         <div className="flex flex-col gap-1 text-center sm:text-left">
           <h1 className="text-3xl font-bold text-orange-500 sm:text-4xl">
             Admin Dashboard
@@ -93,16 +82,24 @@ export default function AdminPage() {
         ) : (
           <FeedbackTable
             feedbacks={filteredFeedback}
-            setIsModalOpen={setIsModalOpen}
+            setIsEditModalOpen={setIsEditModalOpen}
+            setIsDeleteModalOpen={setIsDeleteModalOpen}
             setSelectedFeedback={setSelectedFeedback}
-            handleDelete={handleDelete}
           />
         )}
 
-        {isModalOpen && (
+        {isEditModalOpen && (
           <EditModal
             feedback={selectedFeedback!}
-            onClose={() => setIsModalOpen(false)}
+            onClose={() => setIsEditModalOpen(false)}
+          />
+        )}
+
+        {isDeleteModalOpen && (
+          <DeleteModal
+            feedback={selectedFeedback!}
+            onClose={() => setIsDeleteModalOpen(false)}
+            setFeedbacks={setFeedbacks}
           />
         )}
       </div>

@@ -24,14 +24,14 @@ const headers = [
 
 export default function FeedbackTable({
   feedbacks,
-  setIsModalOpen,
+  setIsEditModalOpen,
+  setIsDeleteModalOpen,
   setSelectedFeedback,
-  handleDelete,
 }: {
   feedbacks: Feedback[];
-  setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedFeedback: React.Dispatch<React.SetStateAction<Feedback | null>>;
-  handleDelete: (id: string) => Promise<void>;
+  setIsEditModalOpen: (isOpen: boolean) => void;
+  setIsDeleteModalOpen: (isOpen: boolean) => void;
+  setSelectedFeedback: (f: Feedback | null) => void;
 }) {
   return (
     <div className="overflow-x-auto rounded-lg">
@@ -54,7 +54,7 @@ export default function FeedbackTable({
             <tr
               key={f.id}
               onClick={() => {
-                setIsModalOpen(true);
+                setIsEditModalOpen(true);
                 setSelectedFeedback(f);
               }}
               className="border-t border-gray-300 transition-all duration-200 hover:bg-gray-50"
@@ -72,8 +72,8 @@ export default function FeedbackTable({
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => {
-                      setIsModalOpen(true);
                       setSelectedFeedback(f);
+                      setIsEditModalOpen(true);
                     }}
                     className="rounded-lg p-2 text-blue-600 transition-colors hover:bg-blue-50"
                     title="Edit"
@@ -82,7 +82,8 @@ export default function FeedbackTable({
                   </button>
                   <button
                     onClick={(e) => {
-                      handleDelete(f.id);
+                      setSelectedFeedback(f);
+                      setIsDeleteModalOpen(true);
                       e.stopPropagation();
                     }}
                     className="rounded-lg p-2 text-red-600 transition-colors hover:bg-red-50"
